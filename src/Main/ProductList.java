@@ -1,10 +1,7 @@
 package Main;
 
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProductList {
     //variables
@@ -12,7 +9,7 @@ public class ProductList {
 
     private class Product {
         String productName;
-        Map<Month, Double> price = new <Month, Double>LinkedHashMap();
+        Map<Month, Double> price = new <Month, Double>HashMap();
 
         public Product(String productName, Month month, double value) {
             this.productName = productName;
@@ -79,6 +76,9 @@ public class ProductList {
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
+
+
+        System.out.println(Month.of(0));
 
     }
 
