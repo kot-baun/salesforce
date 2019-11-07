@@ -1,0 +1,108 @@
+drop table if exists Contacts, Organization, Connection;
+
+create table Contacts
+(
+    contact_ID   integer     not null auto_increment,
+    contact_name varchar(10) not null,
+    primary key (contact_ID)
+);
+create table Organization
+(
+    organization_ID   integer     not null auto_increment,
+    organization_name varchar(16) not null,
+    primary key (organization_ID)
+);
+create table Connection
+(
+    contact_ID      integer not null,
+    organization_ID integer not null,
+    primary key (contact_ID, organization_ID),
+    foreign key (contact_ID) references Contacts,
+    foreign key (organization_ID) references Organization,
+);
+
+--set some data
+--organizations
+
+insert into Organization(organization_name)
+values ('Cat');
+insert into Organization(organization_name)
+values ('Dog');
+insert into Organization(organization_name)
+values ('Hamster');
+
+--persons
+
+insert into Contacts(contact_name)
+values ('Atlas');
+insert into Contacts(contact_name)
+values ('Ash');
+insert into Contacts(contact_name)
+values ('Banshee');
+insert into Contacts(contact_name)
+values ('Equinox');
+insert into Contacts(contact_name)
+values ('Excalibur');
+insert into Contacts(contact_name)
+values ('Ember');
+insert into Contacts(contact_name)
+values ('Trinity');
+
+--connections
+
+-- insert into Connection
+-- values (select contact_ID from Contacts where contact_name = 'Atlas',
+--         select organization_ID from Organization where organization_name = 'Cat');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Atlas',
+        select organization_ID from Organization where organization_name = 'Cat');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Ash',
+        select organization_ID from Organization where organization_name = 'Cat');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Ember',
+        select organization_ID from Organization where organization_name = 'Cat');
+
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Ember',
+        select organization_ID from Organization where organization_name = 'Dog');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Equinox',
+        select organization_ID from Organization where organization_name = 'Dog');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Excalibur',
+        select organization_ID from Organization where organization_name = 'Dog');
+
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Atlas',
+        select organization_ID from Organization where organization_name = 'Hamster');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Ash',
+        select organization_ID from Organization where organization_name = 'Hamster');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Ember',
+        select organization_ID from Organization where organization_name = 'Hamster');
+insert into Connection
+values (select contact_ID from Contacts where contact_name = 'Banshee',
+        select organization_ID from Organization where organization_name = 'Hamster');
+
+select Contacts.contact_name
+from Connection
+         inner join Contacts on Connection.contact_ID = Contacts.contact_ID
+         inner join  Organization on Connection.organization_ID = Organization.organization_ID
+where organization_name = 'Cat'
+  and contact_name like 'A%';
+
+
+select Organization.organization_name, count(Organization.organization_name)
+from Connection
+         join Organization on Connection.organization_ID = Organization.organization_ID
+group by Organization.organization_name;
+
+
+-- select *
+-- from Contacts;
+-- select *
+-- from Organization;
+-- select *
+-- from Connection;
