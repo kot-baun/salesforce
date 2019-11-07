@@ -78,6 +78,10 @@ public class Company {
         }
     }
 
+    /**
+     * calculate total available salary for current company
+     * @return
+     */
     private double calcTotalSalary() {
         double totalSalary = 0;
         for (Employee employee : employees)
@@ -89,7 +93,7 @@ public class Company {
         return budget > calcTotalSalary();
     }
 
-    public double availableBudget() {
+    private double availableBudget() {
         return budget - calcTotalSalary();
     }
 

@@ -133,12 +133,11 @@
 </div>
 <script>
     var addButton = document.getElementById("todo-button-add");
-    // addButton.onclick = addTask;
+    var taskValue = document.getElementById("task-value");
+
     addButton.addEventListener("click", addTask);
-    var textfield = document.getElementById("task-value");
-    textfield.addEventListener("keypress", function (ev) {
-        alert("key pressed");
-        if (ev.keyCode === 13) {
+    taskValue.addEventListener("keypress", function (ev) {
+        if (ev.key === 'Enter') {
             addTask();
         }
     });
@@ -148,20 +147,16 @@
         var task = document.createElement("input");
         task.className = "content";
         task.setAttribute("type", "text");
-        // task.setAttribute("readOnly", "true");
         task.readOnly = true;
-        var taskValue = document.getElementById("task-value").value;
-        task.value = taskValue;
-        // alert(taskValue);
+        task.value = taskValue.value;
 
-        if (taskValue === '') {
+        if (taskValue.value === '') {
             alert("no task text");
         } else {
             document.getElementById("task-card").append(task);
         }
-        document.getElementById("task-value").value = "";
+        taskValue.value = "";
     }
-
 
 </script>
 </body>
