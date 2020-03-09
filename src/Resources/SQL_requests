@@ -18,7 +18,7 @@ create table Connection
     organization_ID integer not null,
     primary key (contact_ID, organization_ID),
     foreign key (contact_ID) references Contacts,
-    foreign key (organization_ID) references Organization,
+    foreign key (organization_ID) references Organization
 );
 
 --set some data
@@ -86,15 +86,24 @@ insert into Connection
 values (select contact_ID from Contacts where contact_name = 'Banshee',
         select organization_ID from Organization where organization_name = 'Hamster');
 
+
+select Contacts.contact_name, Organization.organization_name
+from Connection
+         inner join Contacts on Connection.contact_ID = Contacts.contact_ID
+         inner join Organization on Connection.organization_ID = Organization.organization_ID
+where contact_name like 'A%';
+
+
+
 select Contacts.contact_name
 from Connection
          inner join Contacts on Connection.contact_ID = Contacts.contact_ID
-         inner join  Organization on Connection.organization_ID = Organization.organization_ID
+         inner join Organization on Connection.organization_ID = Organization.organization_ID
 where organization_name = 'Cat'
   and contact_name like 'A%';
 
 
-select Organization.organization_name, count(Organization.organization_name)
+select Organization.organization_ID, Organization.organization_name, count(Organization.organization_name)
 from Connection
          join Organization on Connection.organization_ID = Organization.organization_ID
 group by Organization.organization_name;
