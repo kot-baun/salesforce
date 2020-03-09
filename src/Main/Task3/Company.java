@@ -30,9 +30,9 @@ public class Company implements ColorANCII{
     /**
      * Add an employee to the company
      *
-     * @param employee
+     * @param employee employee to hire to the company
      */
-    public synchronized void addEmployee(@NotNull Employee employee) {
+    public synchronized void addEmployee( Employee employee) {
         //do we have enough budget?
         if (employee.getSalary() > availableBudget)
             throw new IllegalArgumentException("a current employee isn't in budget with total salary at " + employee.getSalary() +

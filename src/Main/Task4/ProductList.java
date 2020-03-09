@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductList {
-    List<Product> productList;
+    private List<Product> productList;
 
     public ProductList() {
         this.productList = new ArrayList<Product>();
@@ -25,8 +25,8 @@ public class ProductList {
     /**
      * Add many products to the ProductList
      *
-     * @param productName
-     * @param productPrices
+     * @param productName   list of products names
+     * @param productPrices list of products prices
      */
     public void addProducts(List<String> productName, List<Double> productPrices) {
         if (productName.size() * 12 < productPrices.size())
@@ -34,7 +34,16 @@ public class ProductList {
                     productName.size(), productPrices.size()));
         for (int i = 0; i < productName.size(); i++) {
             Product product = new Product(productName.get(i));
-            product.addPrice(productPrices.subList(i + 12 * i, i + 12 * i + 12));
+            int firstIndex = i + 12 * i;
+            int lastIndex = i + 12 * i + 12;
+
+            if (firstIndex > productPrices.size())
+                throw new IndexOutOfBoundsException("Too many prices");
+            //not prices noy for all year
+            if (lastIndex > productPrices.size())
+                product.addPrice(productPrices.subList(i + 12 * i, productPrices.size()));
+            else
+                product.addPrice(productPrices.subList(i + 12 * i, i + 12 * i + 12));
             productList.add(product);
         }
     }
@@ -77,27 +86,46 @@ public class ProductList {
         }
     }
 
+
+    public void print() {
+        System.out.println(String.format("Name      |%9s |%9s |%9s |%9s |%9s |%9s |%9s |%9s |%9s |%9s |%9s |%9s |", Month.values()));
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------");
+        for (Product product : productList) {
+            System.out.print(String.format("%8s  |", product.getProductName()));
+            for (Month month : Month.values()) {
+                String s;
+                if (null == product.getPrice(month))
+                    s = String.format("%8s  |", null);
+                else
+                    s = String.format("%8.2f  |", product.getPrice(month));
+                System.out.print(s);
+
+            }
+            System.out.println();
+        }
+    }
+
 }
 
 class Product {
     @Getter
     @Setter
     String productName;
-    Map<Month, Double> productPrice;
+    private Map<Month, Double> productPrice;
 
     /**
      * Create a product
      *
-     * @param productName
+     * @param productName product name
      */
     Product(String productName) {
         this.productName = productName;
-        productPrice = new HashMap<Month, Double>();
+        productPrice = new HashMap<>();
     }
 
     Product(String productName, Month month, double price) {
         this.productName = productName;
-        productPrice = new HashMap<Month, Double>();
+        productPrice = new HashMap<>();
         setPrice(month, price);
     }
 
@@ -105,8 +133,8 @@ class Product {
     /**
      * Add a list of prices
      *
-     * @param price
-     * @throws IllegalArgumentException expected 12 prices for 12 months, if more than throw exception
+     * @param price list of product prices. Must be less than 12 elements long(as a number of month)
+     * @throws IllegalArgumentException expected 12 prices for 12 months, if more than throw exception.
      */
     void addPrice(List<Double> price) throws IllegalArgumentException {
         if (price.size() > 12)

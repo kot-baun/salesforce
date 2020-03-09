@@ -16,7 +16,7 @@ public class SalaryService {
      */
     public static void pay(@NotNull Company company) throws Exception {
         if (company.getTotalSalary() > company.getBudget())
-            throw new Exception(String.format("Companies %s need %f , but there are only %f . This is the reason for this exception",
+            throw new Exception(String.format("Companies %s need %f to pay salary, but there are only %f . This is the reason for this exception",
                     company.getName(), company.getTotalSalary(), company.getBudget()));
         System.out.println("The company has the ability to pay salaries. Budget balance "+ company.getAvailableBudget());
     }
