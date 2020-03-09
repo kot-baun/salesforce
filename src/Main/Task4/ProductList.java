@@ -28,8 +28,7 @@ public class ProductList {
      * @param productName
      * @param productPrices
      */
-    @NotNull
-    public void addProducts(@NotNull List<String> productName, @NotNull List<Double> productPrices) {
+    public void addProducts(List<String> productName, List<Double> productPrices) {
         if (productName.size() * 12 < productPrices.size())
             throw new IllegalArgumentException(String.format("Too many prices, too few products. There are %d products and %d prices.",
                     productName.size(), productPrices.size()));
@@ -47,7 +46,7 @@ public class ProductList {
      * @param month       month
      * @param price       price
      */
-    @NotNull
+
     public void addValue(String productName, Month month, double price) {
         Product product = productList.stream().filter(x -> x.productName.equals(productName)).findAny().orElse(null);
         if (null == product) {
