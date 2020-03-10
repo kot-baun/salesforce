@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:mso="urn:schemas-microsoft-com:office:office"
+      xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            font-family: Calibri;
+            color: white;
+        }
+
+        .todo {
+            height: 100%;
+            overflow-x: auto;
+            background: darkslateblue;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .todo .todo-canvas {
+            margin: 1rem;
+            width: 300px;
+        }
+
+        .todo .todo-list {
+            background: slateblue;
+            border-radius: 5px;
+            padding: 1rem;
+        }
+
+        .todo .todo-header {
+            padding: 1rem;
+            display: flex;
+            align-items: end;
+        }
+
+        .todo .todo-button {
+            cursor: pointer;
+
+            color: white;
+            width: 50px;
+            height: 50px;
+            font-size: 2rem;
+            border-radius: 50%;
+            border: 0;
+            -webkit-box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .todo .todo-button:hover {
+            -webkit-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .todo .todo-button.todo-button-add {
+            background: blue;
+
+        }
+
+        .todo .todo-button.todo-button-add:hover {
+            background: mediumblue;
+        }
+
+        .todo .todo-button.todo-button-delete {
+            width: 25px;
+            height: 25px;
+            background: red;
+            font-size: 1rem;
+        }
+
+        .todo .todo-button.todo-button-delete:hover {
+            background: darkred;
+        }
+
+        .todo .todo-card {
+            display: flex;
+            flex-direction: column;
+
+            padding: 1rem;
+            margin: 1rem 0;
+
+            border-radius: 5px;
+            -webkit-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .todo .todo-card .label,
+        .todo .todo-card .save {
+            width: 100%;
+        }
+
+        .todo .todo-card .label,
+        .todo .todo-card .content,
+        .todo .todo-card .save {
+            font-size: 1rem;
+            margin: .5rem 0;
+            padding: .25rem 0;
+        }
+
+
+        .contentList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            background: aliceblue;
+            color: black;
+            cursor: pointer;
+            position: relative;
+        }
+
+        ul li:hover {
+            background: #ddd;
+        }
+
+        /* Style the close button */
+        .close {
+            position: absolute;
+            right: 0;
+            padding: 1px 1px 1px 1px;
+        }
+
+        .close:hover {
+            background-color: #f44336;
+            color: white;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="todo">
+    <div class="todo-canvas">
+
+        <div class="todo-header">
+            <button class="todo-button todo-button-add" id="todo-button-add">+</button>
+        </div>
+        <div class="todo-list">
+            <div class="todo-card" id="card-1">
+                <label class="label">Content</label>
+                <input class="content" type="text" id="task-value"/>
+            </div>
+            <div>
+                <ul class="contentList" id="task-list">
+                    <li>111111111111111</li>
+                    <li>222222222222222</li>
+                    <li>333333333333333</li>
+                    <li>444444444444444</li>
+                    <li>555555555555555</li>
+                    <li>666</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+    let addButton = document.getElementById("todo-button-add");
+    let taskValue = document.getElementById("task-value");
+    let taskList = document.getElementById("task-list");
+    //task will be added by clicking on the Add-button, or by pressing ENTER
+    addButton.addEventListener("click", addTask);
+    taskValue.addEventListener("keypress", function (ev) {
+        if (ev.key === 'Enter') {
+            addTask();
+        }
+    });
+
+    //add task and two control buttons for it
+    function addTask() {
+        //check, if no message
+        if ("" === taskValue.value) {
+            alert("no task value");
+            return;
+        }
+        let li = document.createElement("li");
+        // li.append(editButton());
+        // let taskField = document.createElement("input");
+        // taskField.type = "text";
+        // taskField.readOnly = true;
+        // taskField.value = taskValue.value;
+        // li.append(taskField);
+
+        li.append(taskValue.value);
+        li.append(deleteButton());
+        taskList.append(li);
+        taskValue.value = "";
+        console.log("added element");
+    }
+
+
+    function deleteButton() {
+        let span = document.createElement("span");
+        span.className = "close";
+        span.append("\u00D7");
+        span.onclick = function () {
+            this.parentElement.remove();
+        };
+        return span;
+    }
+
+    // function close() {
+    //     let div = this.parentElement;
+    //     console.log("parent element " + div);
+    //     div.remove();
+    //     console.log("number of elements " + document.getElementsByTagName("li").length);
+    //
+    // }
+
+    // function editButton() {
+    //     let span = document.createElement("span");
+    //     span.append("\u270E");
+    //     span.onclick = edit;
+    //     return span;
+    // }
+    //
+    // function edit() {
+    //     let elem = this.parentElement.getElementsByTagName("input");
+    //
+    //     console.log("edit element " + elem);
+    //     console.log(("element value " + elem.value));
+    //
+    //
+    // }
+
+    //inint bllock
+    // Create a "close" button and append it to each list item
+    let taskListElements = document.getElementsByTagName("LI");
+
+    for (let i = 0; i < taskListElements.length; i++) {
+        taskListElements[i].append(deleteButton());
+    }
+    // for (let i = 0; i < taskListElements.length; i++) {
+    //     taskListElements[i].prepend(editButton());
+    // }
+
+</script>
+</body>
+</html>
